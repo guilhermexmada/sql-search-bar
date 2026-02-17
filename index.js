@@ -6,9 +6,12 @@ const app = express()
 // configurando view engine
 app.set("view engine", "ejs")
 
-// rota raiz
+// definindo diretório padrão p/ arquivos estáticos
+app.use(express.static("public"));
+
+// rota raiz -> index.ejs
 app.get("/", (req, res) => {
-    res.send('hellow world')
+    res.render("index")
 })
 
 // inicia servidor HTTP
