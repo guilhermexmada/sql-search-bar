@@ -1,5 +1,6 @@
 import express from "express"
 import connection from "./config/connection/sequelize-config.js"
+import clientesRoute from "./routes/clientes.route.js"
 
 // instanciando express
 const app = express()
@@ -10,7 +11,13 @@ app.set("view engine", "ejs")
 // definindo diretório padrão p/ arquivos estáticos
 app.use(express.static("public"));
 
-// rota raiz -> index.ejs
+// configurando recebimento de dados via forms
+app.use(express.urlencoded({extended: false}))
+
+// configurando caminho inicial das rotas
+app.use("/clientes", clientesRoute)
+
+// rota raiz
 app.get("/", (req, res) => {
     res.render("index")
 })
