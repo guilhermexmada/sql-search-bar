@@ -9,7 +9,7 @@ class ClienteModel {
             return clientes
         } catch (error) {
             console.log(`Ocorreu um erro ao listar os clientes: ${error}`)
-            //throw new Error("Não foi possível consultar os clientes")
+            throw new Error("Não foi possível consultar os clientes")
         }
     }
 }

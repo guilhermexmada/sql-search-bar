@@ -8,7 +8,7 @@ class ClientesController {
             const clientes = await Cliente.listar()
             res.json(clientes)
         } catch (error) {
-            //res.status(500).json({ error: error.message })
+            res.status(500).json({ error: error.message })
         }
     }
 }
