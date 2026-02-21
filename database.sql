@@ -87,6 +87,18 @@ insert into produtos (id_vendedor,id_cliente,nome,tipo,preco,quant,validade,stat
 (4,7,"Liquidificador","Eletrodoméstico",89.90,1,"2029-12-15","vendido","ativo"),
 (5,8,"Aspirador de Pó","Eletrodoméstico",120.00,1,"2029-10-24","pendente","ativo");
 
+# criando view para todos os clientes
+create view vw_clientes as
+select * from clientes where status = "ativo";
+
+# criando view para todos os vendedores
+create view vw_vendedores as 
+select * from vendedores where status = "ativo";
+
+# criando view para todos os produtos
+create view vw_produtos as
+select * from produtos where status = "ativo";
+
 # criando view para exibir todas as compras finalizadas
 create view vw_vendas_completas as
 select 
