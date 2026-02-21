@@ -1,4 +1,5 @@
 import express from "express"
+import connection from "./config/connection/sequelize-config.js"
 
 // instanciando express
 const app = express()
