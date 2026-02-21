@@ -100,7 +100,7 @@ join vendedores on id_vendedor = vendedores.id
 where status_compra = "vendido";
 
 # criando view para exibir todas as compras pendentes ou reembolsadas
-create view vw_vendas_incompletas as;
+create view vw_vendas_incompletas as
 select 
 clientes.nome as cliente,
 vendedores.nome as vendedor,
@@ -111,4 +111,17 @@ join clientes on id_cliente = clientes.id
 join vendedores on id_vendedor = vendedores.id
 where status_compra = "pendente" || status_compra = "reembolsado";
 
-# criando procedure para 
+# criando function para somar o valor total vendido
+delimiter //
+create function totalVendido()
+returns decimal(10,2)
+begin
+	declare total decimal(10,2);
+    select sum(preco * quant) into total from produtos where status_compra != "reembolsado";
+    return ifnull(total,0);
+end // 
+delimiter ;
+
+# select totalVendido(); 
+
+# criando function para 
