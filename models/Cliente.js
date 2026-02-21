@@ -5,7 +5,7 @@ class ClienteModel {
     // consulta os dados de todos os clientes no banco
     static async listar() {
         try {
-            const [clientes] = await Sequelize.query("SELECT * FROM vw_clientes")
+            const [clientes] = await connection.query("SELECT * FROM vw_clientes")
             return clientes
         } catch (error) {
             console.log(`Ocorreu um erro ao listar os clientes: ${error}`)
