@@ -6,7 +6,8 @@ class ClientesController {
     static async listar(req, res) {
         try {
             const clientes = await ClienteModel.listar()
-            res.json(clientes)
+            res.render("index",{clientes})
+            //res.json(clientes)
         } catch (error) {
             res.status(500).json({ error: error.message })
         }
