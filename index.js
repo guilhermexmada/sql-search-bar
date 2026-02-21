@@ -5,6 +5,13 @@ import clientesRoute from "./routes/clientes.route.js"
 // instanciando express
 const app = express()
 
+// tenta conectar ao banco
+connection.authenticate().then(() => {
+    console.log("Conexão com o banco de dados foi bem-sucedida!")
+}).catch((error) => {
+    console.log(`Ocorreu um erro ao conectar ao banco de dados: ${error}`)
+})
+
 // configurando view engine
 app.set("view engine", "ejs")
 
