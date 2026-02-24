@@ -87,9 +87,27 @@ insert into produtos (id_vendedor,id_cliente,nome,tipo,preco,quant,validade,stat
 (4,7,"Liquidificador","Eletrodoméstico",89.90,1,"2029-12-15","vendido","ativo"),
 (5,8,"Aspirador de Pó","Eletrodoméstico",120.00,1,"2029-10-24","pendente","ativo");
 
+
+# show create table clientes; -> verifica engine das tabelas
+
+# adicionando índice FULLTEXT na tabela clientes 
+alter table clientes add fulltext(nome, estado);
+
+# definindo variável da consulta FULLTEXT
+set @busca = 'Daniela';
+
 # criando view para todos os clientes
 create view vw_clientes as
 select * from clientes where status = "ativo";
+
+# executando consulta FULLTEXT na VIEW vw_clientes
+SELECT *,
+       MATCH(nome, estado) 
+       AGAINST(@busca IN BOOLEAN MODE) AS score
+FROM vw_clientes
+WHERE MATCH(nome, estado)
+      AGAINST(@busca IN BOOLEAN MODE)
+ORDER BY score DESC;
 
 # criando view para todos os vendedores
 create view vw_vendedores as 
@@ -135,5 +153,3 @@ end //
 delimiter ;
 
 # select totalVendido(); 
-
-# criando function para 
