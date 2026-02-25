@@ -99,3 +99,26 @@ ADD FULLTEXT idx_postagens_busca (titulo, conteudo, tags);
 -- Busca em comentários
 ALTER TABLE comentarios
 ADD FULLTEXT idx_comentarios_busca (conteudo);
+
+-- =====================================================
+-- CONSULTA FULLTEXT 
+-- =====================================================
+
+DELIMITER //
+CREATE PROCEDURE buscar(IN termo TEXT)
+BEGIN
+	SELECT
+	post.id,
+    post.titulo,
+    post.conteudo,
+    post.tags,
+    MATCH(p.titulo, p.conteudo, p.tags)
+    AGAINST(termo IN BOOLEAN MODE) AS score
+FROM postagens WHERE post.status = 'ativo'
+AND MATCH(post.titulo, post.conteudo, post.tags)
+AGAINST(termo IN BOOLEAN MODE)
+ORDER BY score DESC;
+END //
+DELIMITER ;
+
+# CALL buscar('termo'); 
