@@ -19,7 +19,9 @@ app.set("view engine", "ejs")
 app.use(express.static("public"));
 
 // configurando recebimento de dados via forms
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: true})) // true = permite
+
+app.use(express.json())
 
 // configurando caminho inicial das rotas
 app.use("/clientes", clientesRoute)

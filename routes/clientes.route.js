@@ -5,5 +5,6 @@ import ClientesController from "../controllers/ClientesController.js"
 const router = express.Router()
 
 router.get("/", ClientesController.listar) // rota para consultar todos os clientes
+router.post("/", ClientesController.buscar) 
 
 export default router // importado como 'clientesRoute'

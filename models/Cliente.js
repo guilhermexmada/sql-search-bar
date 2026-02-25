@@ -12,7 +12,24 @@ class ClienteModel {
             throw new Error("Não foi possível consultar os clientes")
         }
     }
+
+    static async buscar(termo) {
+        try {
+            const [pesquisa] = await connection.query(
+                "CALL buscar(:termo)",
+            {
+                replacements: { termo },
+                type: connection.QueryTypes.SELECT // arruma problema de retornar apenas 01 registro por conta do aninhamento dos dados do JSON -> NODE
+            }
+)
+            return pesquisa
+        } catch (error) {
+            console.log(`Ocorreu um erro ao pesquisar: ${error}`)
+            throw new Error("Não foi possível consultar os dados")
+        }
+    }
 }
+
 
 export default ClienteModel
 
