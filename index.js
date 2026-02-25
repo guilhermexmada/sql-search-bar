@@ -1,6 +1,6 @@
 import express from "express"
 import connection from "./config/connection/sequelize-config.js"
-import clientesRoute from "./routes/clientes.route.js"
+import postsRoute from "./routes/posts.route.js"
 
 // instanciando express
 const app = express()
@@ -24,7 +24,7 @@ app.use(express.urlencoded({extended: true})) // true = permite
 app.use(express.json())
 
 // configurando caminho inicial das rotas
-app.use("/clientes", clientesRoute)
+app.use("/posts", postsRoute)
 
 // rota raiz
 app.get("/", (req, res) => {

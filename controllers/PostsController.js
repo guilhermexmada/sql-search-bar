@@ -1,7 +1,7 @@
-import ClienteModel from "../models/Cliente.js"
+import PostModel from "../models/Post.js"
 
 
-class ClientesController {
+class PostsController {
     // requisita a consulta de todos os clientes
     static async listar(req, res) {
         try {
@@ -17,7 +17,7 @@ class ClientesController {
         //console.log('rota acionada')
         try{
             const termo = req.body.termo
-            const pesquisa = await ClienteModel.buscar(termo)
+            const pesquisa = await PostModel.buscar(termo)
             res.json(pesquisa)
             //res.render("index",{clientes : pesquisa})
         } catch (error){
@@ -26,4 +26,4 @@ class ClientesController {
     }
 }
 
-export default ClientesController
+export default PostsController

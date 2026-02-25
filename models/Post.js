@@ -1,7 +1,7 @@
 import Sequelize from "sequelize"
 import connection from "../config/connection/sequelize-config.js"
 
-class ClienteModel {
+class PostModel {
     // consulta os dados de todos os clientes no banco
     static async listar() {
         try {
@@ -31,5 +31,5 @@ class ClienteModel {
 }
 
 
-export default ClienteModel
+export default PostModel
 
