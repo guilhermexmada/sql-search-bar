@@ -2,8 +2,12 @@ import express from "express"
 import connection from "./config/connection/sequelize-config.js"
 import postsRoute from "./routes/posts.route.js"
 
-// instanciando express
+// configurações express
 const app = express()
+app.set("view engine", "ejs")
+app.use(express.static("public"));
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 
 // tenta conectar ao banco
 connection.authenticate().then(() => {
@@ -12,24 +16,11 @@ connection.authenticate().then(() => {
     console.log(`Ocorreu um erro ao conectar ao banco de dados: ${error}`)
 })
 
-// configurando view engine
-app.set("view engine", "ejs")
-
-// definindo diretório padrão p/ arquivos estáticos
-app.use(express.static("public"));
-
-// configurando recebimento de dados via forms
-app.use(express.urlencoded({extended: true})) // true = permite
-
-app.use(express.json())
-
-// configurando caminho inicial das rotas
-app.use("/posts", postsRoute)
-
-// rota raiz
+// configurações rotas
 app.get("/", (req, res) => {
     res.render("index", { pesquisa: []}) // passar array vazio impede erro de referência ao abrir a página pela primeira vez
 })
+app.use("/posts", postsRoute)
 
 // inicia servidor HTTP
 const port = 8080
