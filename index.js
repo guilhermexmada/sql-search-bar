@@ -28,7 +28,7 @@ app.use("/posts", postsRoute)
 
 // rota raiz
 app.get("/", (req, res) => {
-    res.render("index", { clientes: []}) // passar array vazio impede erro de referência ao abrir a página pela primeira vez
+    res.render("index", { pesquisa: []}) // passar array vazio impede erro de referência ao abrir a página pela primeira vez
 })
 
 // inicia servidor HTTP

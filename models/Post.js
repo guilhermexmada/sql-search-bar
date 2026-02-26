@@ -15,11 +15,11 @@ class PostModel {
 
     static async buscar(termo) {
         try {
-            const [pesquisa] = await connection.query(
+            const pesquisa = await connection.query(
                 "CALL buscar(:termo)",
             {
                 replacements: { termo },
-                type: connection.QueryTypes.SELECT // arruma problema de retornar apenas 01 registro por conta do aninhamento dos dados do JSON -> NODE
+                // type: connection.QueryTypes.SELECT 
             }
 )
             return pesquisa
