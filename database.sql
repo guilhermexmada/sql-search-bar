@@ -419,7 +419,7 @@ INSERT INTO comentarios (postagem_id, usuario_id, conteudo, status) VALUES
 (44,4,'Gostei do exemplo aplicado.','ativo');
 
 -- =====================================================
--- CONSULTA FULLTEXT 
+-- CONSULTA FULLTEXT em BOOLEAN MODE
 -- =====================================================
 
 DELIMITER //
@@ -439,4 +439,26 @@ ORDER BY score DESC;
 END //
 DELIMITER ;
 
+-- =====================================================
+-- CONSULTA FULLTEXT em NATURAL LANGUAGE MODE
+-- =====================================================
+
+DELIMITER //
+CREATE PROCEDURE buscarAvancado(IN termo TEXT)
+BEGIN
+	SELECT
+	post.id,
+    post.titulo,
+    post.conteudo,
+    post.tags,
+    MATCH(post.titulo, post.conteudo, post.tags)
+    AGAINST(termo IN NATURAL LANGUAGE MODE) AS score
+FROM postagens post WHERE post.status = 'ativo'
+AND MATCH(post.titulo, post.conteudo, post.tags)
+AGAINST(termo IN BOOLEAN MODE)
+ORDER BY score DESC;
+END //
+DELIMITER ;
+
 # CALL buscar('sql'); 
+# CALL buscarAvancado('sql');
