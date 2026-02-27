@@ -166,9 +166,88 @@ const termosRaros = [
     ]
 ]
 
-// escolhe termo aleatório dentro de um tema
-function escolheTermo(array, tema){
-    return array[tema][Math.floor(Math.random() * array.length)] // retorna elemento aleatório
+// retorna termo aleatório dentro de um tema
+function escolheTermo(array, tema) {
+    return array[tema][Math.floor(Math.random() * array.length)]
+}
+
+// retorna conteúdo aleatório p/ post
+function gerarConteudo() {
+    const tamanhoBase = faker.number.int({ min: 5, max: 20 }) // 5 a 20 termos por post
+    const qtdTags = faker.number.int({ min: 1, max: 3 }) // 1 a 3 tags por post
+    const t = Math.random()
+    palavras = []
+    tags = []
+
+    // escolhe tema
+    if (t < 0.3) {
+        tema = 0
+    } else if (t >= 0.3 && t < 0.6) {
+        tema = 1
+    } else {
+        tema = 2
+    }
+
+    for (i = 0; i < tamanhoBase; i++) { // monta array c/ termos escolhidos
+        const p = Math.random()
+        // escolhe raridade do termo
+        if (p < 0.6) {
+            palavras.push(escolheTermo(termosComuns, tema))
+        } else if (p < 0.9) {
+            palavras.push(escolheTermo(termosTecnicos, tema))
+        } else {
+            palavras.push(escolheTermo(termosRaros, tema))
+        }
+    }
+
+    // monta array c/ tags escolhidas
+    for (let i = 0; i < qtdTags; i++) {
+        tags.push(escolheTermo(termosComuns, tema))
+    }
+
+    const post = montarPost(palavras)
+    return post // retornar tags também
+}
+
+function montarPost(palavras) { // monta post com lista de palavras escolhidas
+    const c = faker.number.int({ min: 1, max: 5 }) // até 5 prompts de post possíveis
+    let restantes = palavras.slice(4, palavras.length) // pega os últimos termos e separa por vírgula
+    restantes = restantes.join(", ") + ".";
+
+    if (c == 1) {
+        let post = `Recentemente comecei a estudar sobre ${palavras[0]} e estou gostando muito! 
+            Cada dia estou aprendendo mais sobre como funciona ${palavras[1]},${palavras[2]} e ${palavras[3]}. 
+            Estou particularmente interessado em trabalhar com ${restantes}`
+    } else if (c == 2) {
+        let post = `Você já trabalhou com ${palavras[0]}? Já pensou em entender como funciona ${palavras[1]} ou ${palavras[2]}? 
+        Se você quiser saber como dominar tudo sobre ${palavras[3]}, me segue aí! Tenho um curso especializado sobre ${restantes}`
+    } else if (c == 3) {
+        let post = `Acompanhando o mercado de tecnologia, descobri que ${palavras[0]} e ${palavras[1]} estão cada dia mais em alta 
+        na internet. Quem aqui acha que o ano pode terminar com ${palavras[2]} e ${palavras[3]} no centro das atenções? Também gostaria de ouvir a 
+        opinião de vocês sobre ${restantes}`
+    } else if (c == 4) {
+        let nome = faker.person.firstName()
+        let companhia = faker.company.name()
+        let post = `Olá! Eu sou ${nome} e trabalho com ${palavras[0]} na ${companhia}. Estou procurando profissionais de nível técnico ou superior para trabalhar comigo em 
+        um grande projeto. Se você tem experiência com ${palavras[1]}, ${palavras[2]} ou ${palavras[3]}. Também aceitamos quem souber mexer com ${restantes}`
+    } else if (c == 5) {
+        let start = faker.date.soon()
+        let end = faker.date.soon({ refDate: start })
+        let cidade = faker.location.city()
+        let rua = faker.location.streetAddress()
+        let num = faker.number.int({ min: 1, max: 1000 })
+        let post = `Atenção profissionais de ${palavras[0]}! Vocês estão convidados para participar de um evento especial sobre ${palavras[1]}, ${palavras[2]} e ${palavras[3]} 
+        que ocorrerá de ${start} a ${end} no endereço ${rua}, ${num} em ${cidade}. Também serão tratados temas como ${restantes}`
+    }
+
+    return post;
+}
+
+// escrevendo query SQL
+let sql = "INSERT INTO postagens (usuario_id,titulo,conteudo,tags,visualizacoes,status) VALUES\n";
+
+for (let i = 0; i < totalRegistros; i++) {
+    const usuario_id = faker.number.int({ min: 1, max: 20 })
 }
 
 
