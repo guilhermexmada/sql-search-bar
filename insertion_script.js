@@ -261,7 +261,7 @@ for (let i = 0; i < totalRegistros; i++) {
     const conteudo = postFake
     const tags = tagFake
     const visualizacoes = faker.number.int({ min: 0, max: 5000 })
-    const status = "active"
+    const status = "ativo"
 
     sql += `(${usuario_id},'${titulo}','${conteudo}','${tags}',${visualizacoes},'${status}')`
 
