@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import fs from 'fs'
 
 const totalRegistros = 10000
@@ -176,8 +176,9 @@ function gerarConteudo() {
     const tamanhoBase = faker.number.int({ min: 5, max: 20 }) // 5 a 20 termos por post
     const qtdTags = faker.number.int({ min: 1, max: 3 }) // 1 a 3 tags por post
     const t = Math.random()
-    palavras = []
-    tags = []
+    const palavras = []
+    const tags = []
+    let tema = 0
 
     // escolhe tema
     if (t < 0.3) {
@@ -188,7 +189,7 @@ function gerarConteudo() {
         tema = 2
     }
 
-    for (i = 0; i < tamanhoBase; i++) { // monta array c/ termos escolhidos
+    for (let i = 0; i < tamanhoBase; i++) { // monta array c/ termos escolhidos
         const p = Math.random()
         // escolhe raridade do termo
         if (p < 0.6) {
@@ -206,29 +207,32 @@ function gerarConteudo() {
     }
 
     const post = montarPost(palavras)
-    return post // retornar tags também
+    const tagsFormatadas = tags.map( tag => `#${tag}`).join(" ")
+    const conteudo = [post, tagsFormatadas]
+    return conteudo
 }
 
 function montarPost(palavras) { // monta post com lista de palavras escolhidas
     const c = faker.number.int({ min: 1, max: 5 }) // até 5 prompts de post possíveis
     let restantes = palavras.slice(4, palavras.length) // pega os últimos termos e separa por vírgula
     restantes = restantes.join(", ") + ".";
+    let post = ""
 
     if (c == 1) {
-        let post = `Recentemente comecei a estudar sobre ${palavras[0]} e estou gostando muito! 
+        post = `Recentemente comecei a estudar sobre ${palavras[0]} e estou gostando muito! 
             Cada dia estou aprendendo mais sobre como funciona ${palavras[1]},${palavras[2]} e ${palavras[3]}. 
             Estou particularmente interessado em trabalhar com ${restantes}`
     } else if (c == 2) {
-        let post = `Você já trabalhou com ${palavras[0]}? Já pensou em entender como funciona ${palavras[1]} ou ${palavras[2]}? 
+        post = `Você já trabalhou com ${palavras[0]}? Já pensou em entender como funciona ${palavras[1]} ou ${palavras[2]}? 
         Se você quiser saber como dominar tudo sobre ${palavras[3]}, me segue aí! Tenho um curso especializado sobre ${restantes}`
     } else if (c == 3) {
-        let post = `Acompanhando o mercado de tecnologia, descobri que ${palavras[0]} e ${palavras[1]} estão cada dia mais em alta 
+        post = `Acompanhando o mercado de tecnologia, descobri que ${palavras[0]} e ${palavras[1]} estão cada dia mais em alta 
         na internet. Quem aqui acha que o ano pode terminar com ${palavras[2]} e ${palavras[3]} no centro das atenções? Também gostaria de ouvir a 
         opinião de vocês sobre ${restantes}`
     } else if (c == 4) {
         let nome = faker.person.firstName()
         let companhia = faker.company.name()
-        let post = `Olá! Eu sou ${nome} e trabalho com ${palavras[0]} na ${companhia}. Estou procurando profissionais de nível técnico ou superior para trabalhar comigo em 
+        post = `Olá! Eu sou ${nome} e trabalho com ${palavras[0]} na ${companhia}. Estou procurando profissionais de nível técnico ou superior para trabalhar comigo em 
         um grande projeto. Se você tem experiência com ${palavras[1]}, ${palavras[2]} ou ${palavras[3]}. Também aceitamos quem souber mexer com ${restantes}`
     } else if (c == 5) {
         let start = faker.date.soon()
@@ -236,7 +240,7 @@ function montarPost(palavras) { // monta post com lista de palavras escolhidas
         let cidade = faker.location.city()
         let rua = faker.location.streetAddress()
         let num = faker.number.int({ min: 1, max: 1000 })
-        let post = `Atenção profissionais de ${palavras[0]}! Vocês estão convidados para participar de um evento especial sobre ${palavras[1]}, ${palavras[2]} e ${palavras[3]} 
+        post = `Atenção profissionais de ${palavras[0]}! Vocês estão convidados para participar de um evento especial sobre ${palavras[1]}, ${palavras[2]} e ${palavras[3]} 
         que ocorrerá de ${start} a ${end} no endereço ${rua}, ${num} em ${cidade}. Também serão tratados temas como ${restantes}`
     }
 
@@ -247,8 +251,27 @@ function montarPost(palavras) { // monta post com lista de palavras escolhidas
 let sql = "INSERT INTO postagens (usuario_id,titulo,conteudo,tags,visualizacoes,status) VALUES\n";
 
 for (let i = 0; i < totalRegistros; i++) {
+    const conteudoFake = gerarConteudo()
+
+    const postFake = conteudoFake[0].replace(/'/g,"")
+    const tagFake = conteudoFake[1].replace(/'/g,"")
+
     const usuario_id = faker.number.int({ min: 1, max: 20 })
+    const titulo = faker.company.catchPhrase().replace(/'/g,"")
+    const conteudo = postFake
+    const tags = tagFake
+    const visualizacoes = faker.number.int({ min: 0, max: 5000 })
+    const status = "active"
+
+    sql += `(${usuario_id},'${titulo}','${conteudo}','${tags}',${visualizacoes},'${status}')`
+
+    sql += i < totalRegistros - 1 ? ",\n" : ";\n"
+    
 }
+
+fs.writeFileSync("inserts_postagens.sql", sql)
+
+console.log("Arquivo inserts_postagens.sql gerado com sucesso!")
 
 
 
