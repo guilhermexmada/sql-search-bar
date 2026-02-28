@@ -1,8 +1,9 @@
 <%- include('partials/header.ejs') %>
 
     <div class="search-bar-area">
-        <form class="search-bar" action="/posts/" method="POST">
+        <form class="search-bar" action="/posts/" method="GET">
             <input type="text" name="termo" id="termo">
+            <input type="hidden" name="pagina" value="1">
             <button type="submit">></button>
             <button type="button">+</button>
         </form>
@@ -10,13 +11,20 @@
 
     <div class="list-area">
         <div class="list">
-            <p>Resultados : <%= pesquisa.length %></p>
+            <p>Resultados : <%= pesquisa.length %> | 
+                    Pagina : <%= pagina %> 
+            </p>
             <hr style="width: 90%;">
             <% pesquisa.forEach(item=> { %>
                 <p>
                     <%= item.titulo %>
                 </p>
                 <% }) %>
+                <% if (pesquisa.length >= 20) { %>
+                    <a href="/posts/?termo=<%= termo %>&pagina=<%= pagina + 1 %>">
+                        Carregar mais
+                    </a>
+                    <% } %>
         </div>
     </div>
 

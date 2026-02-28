@@ -2,12 +2,12 @@ import connection from "../config/connection/sequelize-config.js"
 
 class PostModel {
 
-    static async buscar(termo) {
+    static async buscar(termo, offset) {
         try {
             const pesquisa = await connection.query(
-                "CALL buscar(:termo)",
+                "CALL buscar(:termo,:offset)",
                 {
-                    replacements: { termo },
+                    replacements: { termo : termo, offset : offset },
                     // type: connection.QueryTypes.SELECT 
                 }
             )

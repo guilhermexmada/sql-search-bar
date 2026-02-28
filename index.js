@@ -18,9 +18,14 @@ connection.authenticate().then(() => {
 
 // configurações rotas
 app.get("/", (req, res) => {
-    res.render("index", { pesquisa: []}) // passar array vazio impede erro de referência ao abrir a página pela primeira vez
+    res.render("index", { // passar array vazio impede erro de referência ao abrir a página pela primeira vez
+        pesquisa: [],
+        termo: "",
+        pagina: 1,
+        totalRegistros: 0,
+     }) 
 })
-app.use("/posts", postsRoute)
+app.use("/", postsRoute)
 
 // inicia servidor HTTP
 const port = 8080
