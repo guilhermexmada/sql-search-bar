@@ -4,14 +4,14 @@ class PostModel {
 
     static async buscar(termo, offset) {
         try {
-            const pesquisa = await connection.query(
-                "CALL buscar(:termo,:offset)",
+            const resultado = await connection.query(
+                "CALL buscar(?,?)",
                 {
-                    replacements: { termo : termo, offset : offset },
-                    // type: connection.QueryTypes.SELECT 
+                    replacements: [termo, offset]
                 }
             )
-            return pesquisa
+            // console.log(pesquisa)
+            return resultado
         } catch (error) {
             console.log(`Ocorreu um erro ao pesquisar: ${error}`)
             throw new Error("Não foi possível consultar os dados")
