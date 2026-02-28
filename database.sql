@@ -425,13 +425,15 @@ INSERT INTO comentarios (postagem_id, usuario_id, conteudo, status) VALUES
 DELIMITER //
 CREATE PROCEDURE buscar(IN termo TEXT, IN intervalo INT)
 BEGIN
+    -- busca c/ controle p/ paginação
 	SELECT
 	post.id,
     post.titulo,
     post.conteudo,
     post.tags,
     MATCH(post.titulo, post.conteudo, post.tags)
-    AGAINST(termo IN BOOLEAN MODE) AS score
+    AGAINST(termo IN BOOLEAN MODE) AS score,
+    COUNT(*) OVER() AS totalRegistros
 FROM postagens post WHERE post.status = 'ativo'
 AND MATCH(post.titulo, post.conteudo, post.tags)
 AGAINST(termo IN BOOLEAN MODE)
@@ -448,13 +450,15 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE buscarAvancado(IN termo TEXT, IN intervalo INT)
 BEGIN
+	-- busca c/ controle p/ paginação
 	SELECT
 	post.id,
     post.titulo,
     post.conteudo,
     post.tags,
     MATCH(post.titulo, post.conteudo, post.tags)
-    AGAINST(termo IN NATURAL LANGUAGE MODE) AS score
+    AGAINST(termo IN NATURAL LANGUAGE MODE) AS score,
+    COUNT(*) OVER() as totalRegistros
 FROM postagens post WHERE post.status = 'ativo'
 AND MATCH(post.titulo, post.conteudo, post.tags)
 AGAINST(termo IN BOOLEAN MODE)
