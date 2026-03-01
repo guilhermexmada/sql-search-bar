@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
     res.render("index", { // passar array vazio impede erro de referência ao abrir a página pela primeira vez
         resultado: [],
         termo: "",
-        pagina: 1,
+        pagina: 0,
         totalRegistros: 0,
         totalPaginas: 0
      }) 

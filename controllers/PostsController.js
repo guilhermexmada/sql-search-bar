@@ -5,7 +5,7 @@ class PostsController {
     static async buscar(req, res) {
         try {
             const termo = req.query.termo || ""
-            const pagina = parseInt(req.query.pagina) || 1
+            const pagina = parseInt(req.query.pagina) || 0
             let totalRegistros = 0
             let totalPaginas = 0
 

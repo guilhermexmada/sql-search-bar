@@ -2,29 +2,73 @@
 
     <div class="search-bar-area">
         <form class="search-bar" action="/posts/" method="GET">
-            <input type="text" name="termo" id="termo">
+            <input type="text" name="termo" placeholder="Digite alguma coisa..." id="termo" required>
             <input type="hidden" name="pagina" value="1">
-            <button type="submit">></button>
-            <button type="button">+</button>
+            <button type="submit">Pesquisar</button>
+            <hr width="100%" color="#ffffff">
+
+            <label for="limite">Resultados por pág.:
+                <input type="number" name="limite" value="20" max="50" min="1" id="limite">
+            </label>
+
+            <label for="boolean">
+                <input type="radio" name="tipo" value="booleana" id="booleana" checked>
+                Busca booleana
+            </label>
+
+            <label for="natural">
+                <input type="radio" name="tipo" value="natural" id="natural">
+                Busca por linguagem natural
+            </label>
+
+            <hr style="width: 100%;" color="#ffffff">
+
+            <p>
+                Página : <%= pagina %> de <%= totalPaginas %>
+            </p>
         </form>
     </div>
 
     <div class="list-area">
         <div class="list">
-            <p>Resultados : <%= resultado.length %> | 
-                    Pagina : <%= pagina %> de <%= totalPaginas %>
-            </p>
-            <hr style="width: 90%;">
+
+
+            <div class="post">
+                <div class="post-header">Este é o título do post</div>
+                <div class="post-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci deserunt, nam
+                    rem fugit esse necessitatibus molestias corporis voluptate suscipit voluptatum velit, corrupti dicta
+                    ipsa repellat. Animi eaque molestiae dolorem incidunt.
+                    Magnam cum doloremque optio dignissimos iusto laboriosam asperiores numquam? Aut placeat natus
+                    similique nisi. Reiciendis molestias et eveniet quibusdam quasi debitis reprehenderit deleniti nobis
+                    accusantium repellat. Fugit sint commodi magni.</div>
+                <div class="post-footer">Este é o rodapé do post</div>
+            </div>
+
             <% resultado.forEach(item=> { %>
-                <p>
-                    <%= item.titulo %>
-                </p>
+                <div class="post">
+                    <div class="post-header">
+                        <%= item.titulo %>
+                    </div>
+                    <div class="post-body">
+                        <%= item.conteudo %>
+                    </div>
+                    <div class="post-footer">
+                        <%= item.tags %>
+                    </div>
+                </div>
                 <% }) %>
-                <% if (resultado.length >= 20) { %>
-                    <a href="/posts/?termo=<%= termo %>&pagina=<%= pagina + 1 %>">
-                        Carregar mais
-                    </a>
-                    <% } %>
+
+                    <% if (resultado.length>= 20) { %>
+                        <% if (pagina> 1 ) { %>
+
+                            <a href="/posts/?termo=<%= termo %>&pagina=<%= pagina - 1 %>>">
+                                <button class="past-page">Página anterior</button>
+                            </a>
+                            <% } %>
+                                <a href="/posts/?termo=<%= termo %>&pagina=<%= pagina + 1 %>">
+                                    <button class="next-page">Próxima página</button>
+                                </a>
+                                <% } %>
         </div>
     </div>
 
