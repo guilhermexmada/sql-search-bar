@@ -461,7 +461,7 @@ BEGIN
     COUNT(*) OVER() as totalRegistros
 FROM postagens post WHERE post.status = 'ativo'
 AND MATCH(post.titulo, post.conteudo, post.tags)
-AGAINST(termo IN BOOLEAN MODE)
+AGAINST(termo IN NATURAL LANGUAGE MODE)
 ORDER BY score DESC
 LIMIT limite
 OFFSET intervalo;
