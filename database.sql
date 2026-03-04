@@ -423,7 +423,7 @@ INSERT INTO comentarios (postagem_id, usuario_id, conteudo, status) VALUES
 -- =====================================================
 
 DELIMITER //
-CREATE PROCEDURE buscar(IN termo TEXT, IN intervalo INT)
+CREATE PROCEDURE buscar(IN termo TEXT, IN limite INT, IN intervalo INT)
 BEGIN
     -- busca c/ controle p/ paginação
 	SELECT
@@ -438,7 +438,7 @@ FROM postagens post WHERE post.status = 'ativo'
 AND MATCH(post.titulo, post.conteudo, post.tags)
 AGAINST(termo IN BOOLEAN MODE)
 ORDER BY score DESC
-LIMIT 20
+LIMIT limite
 OFFSET intervalo;
 END //
 DELIMITER ;
@@ -448,7 +448,7 @@ DELIMITER ;
 -- =====================================================
 
 DELIMITER //
-CREATE PROCEDURE buscarAvancado(IN termo TEXT, IN intervalo INT)
+CREATE PROCEDURE buscarAvancado(IN termo TEXT, IN limite INT, IN intervalo INT)
 BEGIN
 	-- busca c/ controle p/ paginação
 	SELECT
@@ -463,7 +463,7 @@ FROM postagens post WHERE post.status = 'ativo'
 AND MATCH(post.titulo, post.conteudo, post.tags)
 AGAINST(termo IN BOOLEAN MODE)
 ORDER BY score DESC
-LIMIT 20
+LIMIT limite
 OFFSET intervalo;
 END //
 DELIMITER ;

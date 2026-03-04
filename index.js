@@ -23,7 +23,9 @@ app.get("/", (req, res) => {
         termo: "",
         pagina: 0,
         totalRegistros: 0,
-        totalPaginas: 0
+        totalPaginas: 0,
+        limite : 20,
+        tipo: "booleana"
      }) 
 })
 app.use("/", postsRoute)

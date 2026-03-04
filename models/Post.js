@@ -2,23 +2,36 @@ import connection from "../config/connection/sequelize-config.js"
 
 class PostModel {
 
-    static async buscar(termo, offset) {
+    // operação SQL para buscar postagens em modo booleano
+    static async buscar(termo, limite, offset) {
         try {
             const resultado = await connection.query(
-                "CALL buscar(?,?)",
+                "CALL buscar(?,?,?)",
                 {
-                    replacements: [termo, offset]
+                    replacements: [termo, limite, offset]
                 }
             )
-            // console.log(pesquisa)
             return resultado
         } catch (error) {
-            console.log(`Ocorreu um erro ao pesquisar: ${error}`)
-            throw new Error("Não foi possível consultar os dados")
+            console.log(`Erro ao pesquisar postagens: ${error}`)
+        }
+    }
+    
+    // operação SQL para buscar postagens em modo de linguagem natural
+    static async buscarAvancado(termo, limite, offset) {
+        try {
+            const resultado = await connection.query(
+                "CALL buscarAvancado(?,?,?)",
+                {
+                    replacements: [termo, limite, offset]
+                }
+            )
+            return resultado
+        } catch (error) {
+            console.log(`Erro ao pesquisar postagens: ${error}`)
         }
     }
 }
-
 
 export default PostModel
 

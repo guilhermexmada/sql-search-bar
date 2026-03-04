@@ -2,13 +2,13 @@
 
     <div class="search-bar-area">
         <form class="search-bar" action="/posts/" method="GET">
-            <input type="text" name="termo" placeholder="Digite alguma coisa..." id="termo" required>
-            <input type="hidden" name="pagina" value="1">
+            <input type="text" name="termo" value="<%= termo %>" placeholder="Digite alguma coisa..." id="termo" required>
+            <input type="hidden" name="pagina" value="1"> <!-- pela barra de pesquisa sempre cai na página 01 -->
             <button type="submit">Pesquisar</button>
             <hr width="100%" color="#ffffff">
 
             <label for="limite">Resultados por pág.:
-                <input type="number" name="limite" value="20" max="50" min="1" id="limite">
+                <input type="number" name="limite" value="<%= limite %>" max="50" min="1" id="limite">
             </label>
 
             <label for="boolean">
@@ -24,25 +24,13 @@
             <hr style="width: 100%;" color="#ffffff">
 
             <p>
-                Página : <%= pagina %> de <%= totalPaginas %>
+                Página : <%= pagina %> de <%= totalPaginas %> para <%= totalRegistros %> registros encontrados
             </p>
         </form>
     </div>
 
     <div class="list-area">
         <div class="list">
-
-
-            <div class="post">
-                <div class="post-header">Este é o título do post</div>
-                <div class="post-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci deserunt, nam
-                    rem fugit esse necessitatibus molestias corporis voluptate suscipit voluptatum velit, corrupti dicta
-                    ipsa repellat. Animi eaque molestiae dolorem incidunt.
-                    Magnam cum doloremque optio dignissimos iusto laboriosam asperiores numquam? Aut placeat natus
-                    similique nisi. Reiciendis molestias et eveniet quibusdam quasi debitis reprehenderit deleniti nobis
-                    accusantium repellat. Fugit sint commodi magni.</div>
-                <div class="post-footer">Este é o rodapé do post</div>
-            </div>
 
             <% resultado.forEach(item=> { %>
                 <div class="post">
@@ -58,14 +46,14 @@
                 </div>
                 <% }) %>
 
-                    <% if (resultado.length>= 20) { %>
+                    <% if (resultado.length >= limite) { %>
                         <% if (pagina> 1 ) { %>
 
-                            <a href="/posts/?termo=<%= termo %>&pagina=<%= pagina - 1 %>>">
+                            <a href="/posts/?termo=<%= termo %>&pagina=<%= pagina - 1 %>>&limite=<%= limite %>&tipo=<%= tipo %>">
                                 <button class="past-page">Página anterior</button>
                             </a>
                             <% } %>
-                                <a href="/posts/?termo=<%= termo %>&pagina=<%= pagina + 1 %>">
+                                <a href="/posts/?termo=<%= termo %>&pagina=<%= pagina + 1 %>&limite=<%= limite %>&tipo=<%= tipo %>">
                                     <button class="next-page">Próxima página</button>
                                 </a>
                                 <% } %>
